@@ -66,7 +66,7 @@ client.connect(err => {
       res.send(document)
     })
   })
-
+ app.get("admin")
   
 
 });
