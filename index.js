@@ -31,7 +31,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
   const ServiceCollection = client.db(`${process.env.DB_NAME}`).collection("service");
   const reviewCollection = client.db(`${process.env.DB_NAME}`).collection("review");
-  const adminCollection = client.db(`${process.env.DB_NAME}`).collection("admin");
+  
 
   app.post("/addReview", (req, res) => {
     const review = req.body
@@ -51,66 +51,23 @@ client.connect(err => {
       })
   })
 
-  // app.post("/addService", (req, res) => {
-  //   const file = req.files.file;
-  //   const name = req.body.name;
-  //   const price = req.body.price;
-  //   const description = req.body.description;
-  //   console.log(file, name, price, description);
-  //   file.mv(`${__dirname}/service/${file.name}`)
-  // })
-
   app.post("/addService", (req, res) => {
-
-    const product = req.body
-    ServiceCollection.insertOne(product)
-      .then(result => {
-        res.send(result.insertedCount > 0)
-      })
+    const service = req.body
+    ServiceCollection.insertOne(service)
+    .then(result =>{
+    res.send(result.insertedCount >0)
+    })
   })
+  
 
-  app.get("/service", (req, res) => {
+  app.get("/services",(req, res) =>{
     ServiceCollection.find()
-      .toArray((err, document) => {
-        res.send(document)
-      })
+    .toArray((err, document) =>{
+      res.send(document)
+    })
   })
 
-  app.post('/AddAdmin', (req, res) => {
-    const file = req.files.file;
-    const name = req.body.name;
-    const email = req.body.email;
-    const newImg = file.data;
-    const encImg = newImg.toString('base64');
-
-    var image = {
-      contentType: file.mimetype,
-      size: file.size,
-      img: Buffer.from(encImg, 'base64')
-    };
-
-    adminCollection.insertOne({ name, email, image })
-      .then(result => {
-        res.send(result.insertedCount > 0);
-      })
-  })
-
-  app.get('/isAdmin', (req, res) => {
-    adminCollection.find({})
-      .toArray((err, documents) => {
-        res.send(documents);
-      })
-  });
-
-  app.post('/isAdmin', (req, res) => {
-    const email = req.body.email;
-    adminCollection.find({ email: email })
-      .toArray((err, doctors) => {
-        res.send(doctors.length > 0);
-      })
-  })
-
-});
+  
 
 });
 
