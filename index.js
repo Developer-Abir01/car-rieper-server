@@ -2,6 +2,7 @@ const express = require('express')
 const MongoClient = require('mongodb').MongoClient;
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const ObjectID = require('mongodb').ObjectID
 require('dotenv').config();
 
 
@@ -63,7 +64,13 @@ client.connect(err => {
       res.send(document)
     })
   })
- app.get("admin")
+  
+  app.delete("/serviceDelete/:id",(req, res) =>{
+    ServiceCollection.deleteOne({_id: ObjectID(req.params.id)})
+    .then(result =>{
+      res.send(result.deletedCount >0)
+    })
+  })
   
 
 });
