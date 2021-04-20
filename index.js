@@ -3,7 +3,6 @@ const MongoClient = require('mongodb').MongoClient;
 const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv').config();
-const fileUpload = require('express-fileUpload');
 
 
 
@@ -14,8 +13,6 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static('service'));
-app.use(fileUpload());
 
 const port = process.env.PORT || 4500
 
